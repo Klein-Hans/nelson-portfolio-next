@@ -80,7 +80,7 @@ export default function Home() {
             </div>
           </div>
           <h3 className='text-2xl sm:text-xl text-gray-700 font-semibold dark:text-white py-4'>
-            Website Design
+            PRODUCT RESEEARCH
           </h3>
           <p className='text-md  text-gray-500 dark:text-gray-300 py-4'>
             Encompassing today’s website design technology to integrated and
@@ -103,7 +103,7 @@ export default function Home() {
             </div>
           </div>
           <h3 className='text-2xl sm:text-xl text-gray-700 font-semibold dark:text-white py-4'>
-            Branding
+            CUSTOMER SERVICE
           </h3>
           <p className='text-md text-gray-500 dark:text-gray-300 py-4'>
             Share relevant, engaging, and inspirational brand messages to create
@@ -126,7 +126,7 @@ export default function Home() {
             </div>
           </div>
           <h3 className='text-2xl sm:text-xl text-gray-700 font-semibold dark:text-white py-4'>
-            SEO Marketing
+            BRANDING
           </h3>
           <p className='text-md  text-gray-500 dark:text-gray-300 py-4'>
             Let us help you level up your search engine game, explore our

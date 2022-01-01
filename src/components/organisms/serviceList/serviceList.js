@@ -6,7 +6,7 @@ import Image from 'next/image';
 export function ServiceList({ ...props }) {
   const controls = useAnimation();
   const leftVariants = {
-    hidden: { x: -100, opacity: 0 },
+    hidden: { x: -30, opacity: 0 },
     visible: {
       x: 0,
       opacity: 1,
@@ -18,7 +18,7 @@ export function ServiceList({ ...props }) {
   };
 
   const rightVariants = {
-    hidden: { x: 100, opacity: 0 },
+    hidden: { x: 30, opacity: 0 },
     visible: {
       x: 0,
       opacity: 1,
@@ -29,21 +29,12 @@ export function ServiceList({ ...props }) {
     },
   };
 
-  const ref = useRef();
+  // const ref = useRef();
   const { ref, inView, entry } = useInView({
     /* Optional options */
-    threshold: 0,
+    threshold: 1,
+    initialInView: true,
   });
-
-  // const setRefs = useCallback(
-  //   (node) => {
-  //     // Ref's from useRef needs to have the node assigned to `current`
-  //     ref.current = node;
-  //     // Callback refs, like the one from `useInView`, is a function that takes the node as an argument
-  //     inViewRef(node);
-  //   },
-  //   [inViewRef]
-  // );
 
   useEffect(() => {
     if (inView) {
@@ -83,7 +74,7 @@ export function ServiceList({ ...props }) {
         <div className='flex justify-center text-gray-800 dark:text-white'>
           <motion.div
             ref={ref}
-            className='drop-shadow-lg col-span-2 flex justify-center'
+            className='mr-12 drop-shadow-lg col-span-2 flex justify-center'
             initial='hidden'
             animate={controls}
             variants={props.service.leftVariants}
@@ -112,10 +103,22 @@ export function ServiceList({ ...props }) {
         <div className='flex justify-center text-gray-800 dark:text-white'>
           <motion.div
             ref={ref}
-            className='drop-shadow-lg col-span-2 flex justify-center'
+            className='mr-12 grid content-center w-80'
             initial='hidden'
             animate={controls}
             variants={props.service.leftVariants}
+          >
+            <h4 className='text-md font-bold uppercase'>
+              {`${props.service.name} ${inView}`}
+            </h4>
+            <p>{props.service.description}</p>
+          </motion.div>
+          <motion.div
+            ref={ref}
+            className='drop-shadow-lg col-span-2 flex justify-center'
+            initial='hidden'
+            animate={controls}
+            variants={props.service.rightVariants}
           >
             <Image
               src={props.service.image}
@@ -123,18 +126,6 @@ export function ServiceList({ ...props }) {
               height='300'
               className='max-w-xs md:max-w-xs rounded-lg shadow-2xl'
             />
-          </motion.div>
-          <motion.div
-            ref={ref}
-            className='grid content-center w-80'
-            initial='hidden'
-            animate={controls}
-            variants={props.service.rightVariants}
-          >
-            <h4 className='text-md font-bold uppercase'>
-              {`${props.service.name} ${inView}`}
-            </h4>
-            <p>{props.service.description}</p>
           </motion.div>
         </div>
       )}
