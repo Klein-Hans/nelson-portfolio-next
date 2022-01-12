@@ -1,5 +1,7 @@
-import { Landing } from 'components/templates';
-import 'tailwindcss/tailwind.css';
+import { Landing } from "components/templates";
+import "@material-tailwind/react/tailwind.css";
+import "tailwindcss/tailwind.css";
+import "styles/global.css";
 
 function MyApp({ Component, pageProps }) {
   return (

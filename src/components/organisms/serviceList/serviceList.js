@@ -94,7 +94,7 @@ export function ServiceList({ ...props }) {
             variants={props.service.rightVariants}
           >
             <h4 className='text-md font-bold uppercase'>
-              {`${props.service.name} ${inView}`}
+              {props.service.name}
             </h4>
             <p>{props.service.description}</p>
           </motion.div>
@@ -109,7 +109,7 @@ export function ServiceList({ ...props }) {
             variants={props.service.leftVariants}
           >
             <h4 className='text-md font-bold uppercase'>
-              {`${props.service.name} ${inView}`}
+              {props.service.name}
             </h4>
             <p>{props.service.description}</p>
           </motion.div>
