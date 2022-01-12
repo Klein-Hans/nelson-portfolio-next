@@ -4,6 +4,10 @@ module.exports = {
   darkMode: "media", // or 'media' or 'class'
   theme: {
     extend: {
+      // screens: {
+      //   xs: "480px",
+      //   // => @media (min-width: 640px) { ... }
+      // },
       textShadow: {
         "2xl": "12px 12px 5px rgb(0,0,0, 0.3)",
         "2xl-light": "10px 10px 15px rgb(200, 200, 200, 0.3)",

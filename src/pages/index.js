@@ -49,7 +49,9 @@ export default function Home() {
             width="200"
             height="200"
             src="/static/images/profile-3.png"
-            className="float-left max-w-xs md:max-w-xs m-auto rounded-full h-52"
+            // layout="responsive"
+            // sizes="100vw"
+            className="float-left rounded-full"
           />
         </motion.div>
         <motion.div
