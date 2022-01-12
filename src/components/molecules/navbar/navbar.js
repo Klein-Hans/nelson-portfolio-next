@@ -14,7 +14,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="bg-transparent absolute h-24 sm:h-20 flex items-center justify-start lg:justify-center z-30 w-full">
+    <header className="bg-transparent absolute h-20 flex items-center justify-start lg:justify-center z-30 w-full">
       <motion.div
         initial={{ y: -50 }}
         animate={{ y: 0 }}
@@ -22,8 +22,8 @@ export function Navbar() {
       >
         <div className="flex items-center">
           <nav
-            className={`font-sans text-neutral-800 dark:text-white uppercase text-lg lg:flex items-center lg:relative sm:fixed top-0 mx-10 my-4 transition-opacity duration-300 ease-in opacity-100 ${
-              !toggle && "opacity-0"
+            className={`font-sans text-neutral-800 dark:text-white uppercase text-lg lg:flex items-center lg:relative fixed top-0 mx-10 my-4 transition-opacity duration-300 ease-in opacity-100 ${
+              toggle && "opacity-0"
             }`}
           >
             <Link href="/" className="py-2 px-6 flex hover:text-teal-500">
