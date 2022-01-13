@@ -24,7 +24,7 @@ export default function About() {
       ),
     },
     {
-      job: "Admin Office",
+      job: "Admin Officer",
       company: "Maxicool Industries & Contracting Corp.",
       yearStart: "2003",
       yearEnd: "2015",
