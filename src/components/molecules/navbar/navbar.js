@@ -6,8 +6,7 @@ import { landingRoutes } from "routes";
 
 export function Navbar() {
   const router = useRouter();
-  console.log(landingRoutes);
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = useState(false);
   const handleToggle = () => {
     setToggle(!toggle);
     console.log(toggle);
