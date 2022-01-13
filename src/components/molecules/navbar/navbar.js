@@ -2,15 +2,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { landingRoutes } from "routes";
+import landingRoutes from "routes";
 
 export function Navbar() {
   const router = useRouter();
   const [toggle, setToggle] = useState(false);
-  const handleToggle = () => {
-    setToggle(!toggle);
-    console.log(toggle);
-  };
 
   return (
     <header className="bg-transparent absolute h-20 flex items-center justify-start lg:justify-center z-30 w-full">
