@@ -63,8 +63,8 @@ const Button = forwardRef(
             {children}
           </a>
         ) : type === "link" ? (
-          <Link href={href} className={stackedClassName}>
-            <a>{children}</a>
+          <Link href={href}>
+            <a className={`${stackedClassName} shadow-3xl`}>{children}</a>
           </Link>
         ) : (
           <button {...rest} type={type} ref={ref} className={stackedClassName}>

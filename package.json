@@ -1,15 +1,17 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
     "@material-tailwind/react": "0.3.4",
     "axios": "^0.24.0",
+    "cross-env": "^7.0.3",
     "framer-motion": "^5.3.2",
     "next": "latest",
+    "next-compose-plugins": "^2.2.1",
     "next-seo": "^4.28.1",
     "prop-types": "^15.8.0",
     "react": "^17.0.2",
@@ -22,6 +24,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.0",
     "postcss": "^8.4.5",
+    "qs": "^6.10.3",
     "tailwindcss": "^3.0.2",
     "tailwindcss-textshadow": "^2.1.3"
   }

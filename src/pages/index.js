@@ -1,12 +1,13 @@
-import Head from "next/head";
 import Typewriter from "typewriter-effect";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { NextSeo } from "next-seo";
 import { ScrollMotion } from "components/molecules";
 import Button from "components/atoms/button/index.js";
+import qs from "qs";
+import { fetchAPI } from "../lib/api";
 
-export default function Home() {
+const Home = ({}) => {
   const imagesRoot = "/static/images";
   const research = `${imagesRoot}/search-solid.svg`;
   const headset = `${imagesRoot}/headset-solid.svg`;
@@ -82,15 +83,6 @@ export default function Home() {
               />
             </span>
           </h1>
-
-          {/* <motion.p
-            initial={{ opacity: 0.2 }}
-            animate={{ opacity: 1 }}
-            transition={{ ease: "easeOut", duration: 1 }}
-            className="text-sm sm:text-base text-primary-800 dark:text-primary-500"
-          >
-            Let's make your business grow and visible to customers.
-          </motion.p> */}
         </motion.div>
       </div>
 
@@ -100,9 +92,10 @@ export default function Home() {
             SERVICES
           </h3>
         </ScrollMotion>
-        <div className="mt-24 sm:flex flex-wrap justify-center items-center text-center gap-10">
+        <div className="mt-24 sm:flex flex-wrap justify-center items-center text-center gap-10 p-15">
           {services.map((item, index) => (
             <ScrollMotion
+              key={index}
               duration={index + 0.5}
               threshold={0}
               className="w-full sm:w-1/2 md:w-1/2 lg:w-1/4 px-4 py-4 bg-white mt-6 shadow-2xl-dark dark:bg-neutral-800"
@@ -126,26 +119,35 @@ export default function Home() {
               {/* </div> */}
             </ScrollMotion>
           ))}
+          <Button
+            type="link"
+            href="/services"
+            color="primary"
+            className="py-4 px-6 text-neutral-800 w-44 mx-auto mb-30"
+            // className="py-4 px-6 bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-offset-indigo-200 text-neutrral-800 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2"
+          >
+            See All Services
+          </Button>
         </div>
       </div>
 
-      <div class="mt-20 bg-white dark:bg-neutral-800 shadow-2xl-dark">
-        <div class="lg:flex lg:items-center lg:justify-evenly w-full mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 z-20">
-          <h2 class="text-3xl font-extrabold text-black dark:text-white sm:text-4xl">
-            <span class="block">LETS WORK TOGETHER</span>
-            <span class="block text-primary-500 text-lg">
+      <div className="mt-20 bg-white dark:bg-neutral-800 shadow-2xl-dark">
+        <div className="lg:flex lg:items-center lg:justify-evenly w-full mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 z-20">
+          <h2 className="text-3xl font-extrabold text-black dark:text-white sm:text-4xl">
+            <span className="block">LETS WORK TOGETHER</span>
+            <span className="block text-primary-500 text-lg">
               Make your business grow and visible to customers.
             </span>
           </h2>
-          <div class="lg:mt-0 lg:flex-shrink-0">
-            <div class=" inline-flex rounded-md shadow">
+          <div className="lg:mt-0 lg:flex-shrink-0">
+            <div className=" inline-flex rounded-md shadow">
               <Button
                 type="download"
                 href={resume}
                 filename={"Nelson Escuton - CV"}
                 color="primary"
                 className="py-4 px-6 text-neutral-800"
-                // class="py-4 px-6 bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-offset-indigo-200 text-neutrral-800 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2"
+                // className="py-4 px-6 bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-offset-indigo-200 text-neutrral-800 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2"
               >
                 DOWNLOAD CV
               </Button>
@@ -155,4 +157,29 @@ export default function Home() {
       </div>
     </>
   );
-}
+};
+
+export const getStaticProps = async () => {
+  // Run API calls in parallel
+  const query = qs.stringify(
+    {
+      filters: {
+        isFeatured: {
+          $eq: true,
+        },
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
+
+  const services = await fetchAPI(`/services?${query}`);
+
+  return {
+    props: { services },
+    revalidate: 1,
+  };
+};
+
+export default Home;

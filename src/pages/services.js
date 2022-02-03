@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ServiceList } from "components/organisms";
 import { NextSeo } from "next-seo";
+import { getStrapiMedia } from "../lib/media";
+import { fetchAPI } from "../lib/api";
 
 export default function Services() {
   const imagesRoot = "/static/images";
