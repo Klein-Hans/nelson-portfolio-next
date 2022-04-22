@@ -4,36 +4,13 @@ import Image from "next/image";
 import { NextSeo } from "next-seo";
 import { ScrollMotion } from "components/molecules";
 import Button from "components/atoms/button/index.js";
-import qs from "qs";
-import { fetchAPI } from "../lib/api";
+import getStrapiURL from "lib/api";
+import { getStrapiMedia } from "lib/media";
+import { gql } from "@apollo/client";
+import client from "../../apollo-client";
 
-const Home = ({}) => {
-  const imagesRoot = "/static/images";
-  const research = `${imagesRoot}/search-solid.svg`;
-  const headset = `${imagesRoot}/headset-solid.svg`;
-  const paint = `${imagesRoot}/paint-brush-solid.svg`;
-  const resume = `/static/files/Nelson Escuton - CV.pdf`;
-
-  const services = [
-    {
-      name: "PRODUCT RESEARCH",
-      description:
-        "Analyzing current market trends to choose “winning” items – something that can generate high sales.",
-      icon: research,
-    },
-    {
-      name: "CUSTOMER SERVICE",
-      description:
-        "Good customer service is a key driver of churn. The U.S. Small Business Administration reports that 68% of customers leave because they’re upset with the treatment they've received. Don’t let that happen to you.",
-      icon: headset,
-    },
-    {
-      name: "BRANDING",
-      description:
-        "Let your customers recognise and experience your business. A strong brand is more than just a logo.",
-      icon: paint,
-    },
-  ];
+const Home = ({ services, resume }) => {
+  const resumeUrl = resume.attributes.resume.data.attributes.url;
 
   return (
     <>
@@ -46,6 +23,7 @@ const Home = ({}) => {
           className="col-span-2 relative ml-24 "
         >
           <Image
+            loading="eager"
             alt="profile"
             width="200"
             height="200"
@@ -86,49 +64,55 @@ const Home = ({}) => {
         </motion.div>
       </div>
 
-      <div className="mb-52">
+      <div className="mb-52 pb-12 shadow-3xl">
         <ScrollMotion threshold={0} className="grid content-center">
           <h3 className="font-bebas-neue relative text-5xl text-center font-sans font-bold tracking-tighter text-gray-800 dark:text-white text-shadow-lg">
             SERVICES
           </h3>
         </ScrollMotion>
         <div className="mt-24 sm:flex flex-wrap justify-center items-center text-center gap-10 p-15">
-          {services.map((item, index) => (
-            <ScrollMotion
-              key={index}
-              duration={index + 0.5}
-              threshold={0}
-              className="w-full sm:w-1/2 md:w-1/2 lg:w-1/4 px-4 py-4 bg-white mt-6 shadow-2xl-dark dark:bg-neutral-800"
-            >
-              {/* <div  */}
-              <div className="flex-shrink-0">
-                <div className="flex items-center mx-auto justify-center h-12 w-12 rounded-md">
-                  <Image
-                    alt={item.name}
-                    width="200"
-                    height="200"
-                    src={item.icon}
-                    className="float-left max-w-xs md:max-w-xs m-auto h-52 text-white"
-                  />
+          {services.map((item, index) => {
+            const { name, description, icon } = item.attributes;
+            const { url: iconUrl } = icon.data.attributes;
+            return (
+              <ScrollMotion
+                key={index}
+                duration={index + 0.5}
+                threshold={0}
+                className="w-full sm:w-1/2 md:w-1/2 lg:w-1/4 px-4 py-4 bg-white mt-6 shadow-2xl-dark dark:bg-neutral-800"
+              >
+                {/* <div  */}
+                <div className="flex-shrink-0">
+                  <div className="flex items-center mx-auto justify-center h-12 w-12 rounded-md">
+                    <Image
+                      alt={name}
+                      width="200"
+                      height="200"
+                      src={getStrapiMedia(iconUrl)}
+                      className="float-left max-w-xs md:max-w-xs m-auto h-52 text-white"
+                    />
+                  </div>
                 </div>
-              </div>
-              <h3 className="text-lg sm:text-xl text-gray-700 font-semibold dark:text-white py-4">
-                {item.name}
-              </h3>
-              <p className="text-sm  text-gray-500 dark:text-gray-300 py-4">{item.description}</p>
-              {/* </div> */}
-            </ScrollMotion>
-          ))}
+                <h3 className="text-lg sm:text-xl text-gray-700 font-semibold dark:text-white py-4">
+                  {name}
+                </h3>
+                <p className="text-sm  text-gray-500 dark:text-gray-300 py-4">{description}</p>
+                {/* </div> */}
+              </ScrollMotion>
+            );
+          })}
+        </div>
+        <ScrollMotion threshold={0} className="grid content-center my-12">
           <Button
             type="link"
             href="/services"
             color="primary"
-            className="py-4 px-6 text-neutral-800 w-44 mx-auto mb-30"
+            className="py-4 px-6 text-neutral-800 w-44 mx-auto mb-50"
             // className="py-4 px-6 bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-offset-indigo-200 text-neutrral-800 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2"
           >
             See All Services
           </Button>
-        </div>
+        </ScrollMotion>
       </div>
 
       <div className="mt-20 bg-white dark:bg-neutral-800 shadow-2xl-dark">
@@ -143,7 +127,7 @@ const Home = ({}) => {
             <div className=" inline-flex rounded-md shadow">
               <Button
                 type="download"
-                href={resume}
+                href={getStrapiMedia(resumeUrl)}
                 filename={"Nelson Escuton - CV"}
                 color="primary"
                 className="py-4 px-6 text-neutral-800"
@@ -159,27 +143,62 @@ const Home = ({}) => {
   );
 };
 
-export const getStaticProps = async () => {
-  // Run API calls in parallel
-  const query = qs.stringify(
-    {
-      filters: {
-        isFeatured: {
-          $eq: true,
-        },
+export async function getStaticProps() {
+  try {
+    const services = await client.query({
+      query: gql`
+        query Services {
+          services {
+            data {
+              id
+              attributes {
+                name
+                description
+                icon {
+                  data {
+                    id
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      `,
+    });
+
+    const document = await client.query({
+      query: gql`
+        query {
+          document {
+            data {
+              id
+              attributes {
+                resume {
+                  data {
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      `,
+    });
+
+    return {
+      props: {
+        services: services.data.services.data,
+        resume: document.data.document.data,
       },
-    },
-    {
-      encodeValuesOnly: true,
-    }
-  );
-
-  const services = await fetchAPI(`/services?${query}`);
-
-  return {
-    props: { services },
-    revalidate: 1,
-  };
-};
+    };
+  } catch (e) {
+    return `Error message: ${e}`;
+  }
+}
 
 export default Home;

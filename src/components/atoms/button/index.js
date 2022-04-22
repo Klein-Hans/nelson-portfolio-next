@@ -20,12 +20,16 @@ const Button = forwardRef(
     },
     ref
   ) => {
+    const animation =
+      "hover:box-shadow: 0 0.5em 0.5em -0.4em var(--hover) focus:transform: translateY(-0.25em) focus:box-shadow: 0 0.5em 0.5em -0.4em var(--hover) focus:transform: translateY(-0.25em)";
+
     switch (color) {
       case "white":
         color = "bg-gray-50 focus:bg-gray-100";
         break;
       case "primary":
-        color = "bg-primary-600 focus:bg-opacity-90 focus:outline-0 hover:bg-opacity-90";
+        color =
+          "bg-primary-600 focus:bg-opacity-90 focus:outline-0 hover:bg-primary-400 hover:text-black";
         break;
       case "secondary":
         color = "bg-teal-500";
@@ -54,24 +58,27 @@ const Button = forwardRef(
     }
 
     const stackedClassName = `${color} ${variant} ${circular && "rounded-lg"} 
-      ${iconOnly} py-2 px-4 text-white w-full text-center text-base font-semibold ${className}`;
+      ${iconOnly} py-2 px-4 text-white w-full text-center text-base font-semibold ${className} hover:no-underline
+      `;
 
     return (
-      <Ripples className="w-full shadow-3xl">
-        {type === "download" ? (
-          <a target="_blank" href={href} {...rest} ref={ref} className={stackedClassName}>
-            {children}
-          </a>
-        ) : type === "link" ? (
-          <Link href={href}>
-            <a className={`${stackedClassName} shadow-3xl`}>{children}</a>
-          </Link>
-        ) : (
-          <button {...rest} type={type} ref={ref} className={stackedClassName}>
-            {children}
-          </button>
-        )}
-      </Ripples>
+      <div className="flex justify-center">
+        <Ripples className=" w-52">
+          {type === "download" ? (
+            <a target="_blank" href={href} {...rest} ref={ref} className={stackedClassName}>
+              {children}
+            </a>
+          ) : type === "link" ? (
+            <Link href={href}>
+              <a className={`${stackedClassName} shadow-3xl`}>{children}</a>
+            </Link>
+          ) : (
+            <button {...rest} type={type} ref={ref} className={stackedClassName}>
+              {children}
+            </button>
+          )}
+        </Ripples>
+      </div>
     );
   }
 );

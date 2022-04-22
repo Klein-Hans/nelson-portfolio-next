@@ -1,7 +1,8 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import Image from 'next/image';
+import { useEffect, useState, useRef, useCallback } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import Image from "next/image";
+import { getStrapiMedia } from "lib/media";
 
 export function ServiceList({ ...props }) {
   const controls = useAnimation();
@@ -11,7 +12,7 @@ export function ServiceList({ ...props }) {
       x: 0,
       opacity: 1,
       transition: {
-        ease: 'easeOut',
+        ease: "easeOut",
         duration: 1,
       },
     },
@@ -23,7 +24,7 @@ export function ServiceList({ ...props }) {
       x: 0,
       opacity: 1,
       transition: {
-        ease: 'easeOut',
+        ease: "easeOut",
         duration: 1,
       },
     },
@@ -38,10 +39,10 @@ export function ServiceList({ ...props }) {
 
   useEffect(() => {
     if (inView) {
-      controls.start('visible');
+      controls.start("visible");
     }
     if (!inView) {
-      controls.start('hidden');
+      controls.start("hidden");
     }
   }, [controls, inView]);
 
@@ -71,60 +72,57 @@ export function ServiceList({ ...props }) {
   return (
     <>
       {props.even ? (
-        <div className='flex justify-center text-gray-800 dark:text-white'>
+        <div className="flex justify-center text-gray-800 dark:text-white">
           <motion.div
             ref={ref}
-            className='mr-12 drop-shadow-lg col-span-2 flex justify-center'
-            initial='hidden'
+            className="mr-12 drop-shadow-lg col-span-2 flex justify-center"
+            initial="hidden"
             animate={controls}
             variants={props.service.leftVariants}
           >
             <Image
-              src={props.service.image}
-              width='300'
-              height='300'
-              className='max-w-xs md:max-w-xs rounded-lg shadow-2xl'
+              loading="eager"
+              src={getStrapiMedia(props.service.imageUrl)}
+              width="300"
+              height="300"
+              className="max-w-xs md:max-w-xs rounded-lg shadow-2xl"
             />
           </motion.div>
           <motion.div
             ref={ref}
-            className='grid content-center w-80'
-            initial='hidden'
+            className="grid content-center w-80"
+            initial="hidden"
             animate={controls}
             variants={props.service.rightVariants}
           >
-            <h4 className='text-md font-bold uppercase'>
-              {props.service.name}
-            </h4>
+            <h4 className="text-md font-bold uppercase text-primary-500">{props.service.name}</h4>
             <p>{props.service.description}</p>
           </motion.div>
         </div>
       ) : (
-        <div className='flex justify-center text-gray-800 dark:text-white'>
+        <div className="flex justify-center text-gray-800 dark:text-white">
           <motion.div
             ref={ref}
-            className='mr-12 grid content-center w-80'
-            initial='hidden'
+            className="mr-12 grid content-center w-80"
+            initial="hidden"
             animate={controls}
             variants={props.service.leftVariants}
           >
-            <h4 className='text-md font-bold uppercase'>
-              {props.service.name}
-            </h4>
+            <h4 className="text-md font-bold uppercase text-primary-500">{props.service.name}</h4>
             <p>{props.service.description}</p>
           </motion.div>
           <motion.div
             ref={ref}
-            className='drop-shadow-lg col-span-2 flex justify-center'
-            initial='hidden'
+            className="drop-shadow-lg col-span-2 flex justify-center"
+            initial="hidden"
             animate={controls}
             variants={props.service.rightVariants}
           >
             <Image
-              src={props.service.image}
-              width='300'
-              height='300'
-              className='max-w-xs md:max-w-xs rounded-lg shadow-2xl'
+              src={getStrapiMedia(props.service.imageUrl)}
+              width="300"
+              height="300"
+              className="max-w-xs md:max-w-xs rounded-lg shadow-2xl"
             />
           </motion.div>
         </div>

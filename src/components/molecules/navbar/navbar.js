@@ -1,12 +1,31 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useRouter } from "next/router";
 import landingRoutes from "routes";
 
 export function Navbar() {
   const router = useRouter();
   const [toggle, setToggle] = useState(false);
+
+  const routes = [
+    {
+      path: "/",
+      name: "Home",
+    },
+    {
+      path: "/services",
+      name: "Services",
+    },
+    {
+      path: "/about",
+      name: "About Me",
+    },
+    {
+      path: "/contact",
+      name: "Contact",
+    },
+  ];
 
   return (
     <header className="bg-transparent absolute h-20 flex items-center justify-start lg:justify-center z-30 w-full">
@@ -21,26 +40,21 @@ export function Navbar() {
               toggle && "opacity-0"
             }`}
           >
-            <Link href="/" className="py-2 px-6 flex hover:text-teal-500">
-              <a className="py-2 px-6 flex text-xs hover:text-primary-800 hover:font-medium transition ease-out duration-500">
-                Home
-              </a>
-            </Link>
-            <Link href="/services">
-              <a className="py-2 px-6 flex text-xs hover:text-primary-800 hover:font-medium transition ease-out duration-500">
-                Services
-              </a>
-            </Link>
-            <Link href="/about" className="py-2 px-6 flex">
-              <a className="py-2 px-6 flex text-xs hover:text-primary-800 hover:font-medium transition ease-out duration-500">
-                About Me
-              </a>
-            </Link>
-            <Link href="/contact" className="py-2 px-6 flex">
-              <a className="py-2 px-6 flex text-xs hover:text-primary-800 hover:font-medium transition ease-out duration-500">
-                Contact
-              </a>
-            </Link>
+            {routes.map((route, index) => {
+              return (
+                <Link key={index} href={route.path}>
+                  <a
+                    className={`py-2 mx-5 flex text-xs hover:no-underline hover:text-primary-800 hover:font-medium transition ease-out duration-500 ${
+                      router.pathname === route.path
+                        ? "border-b-2 border-b-cyan-400 text-primary-300"
+                        : ""
+                    }`}
+                  >
+                    {route.name}
+                  </a>
+                </Link>
+              );
+            })}
           </nav>
           <button className="lg:hidden flex flex-col ml-4" onClick={() => setToggle(!toggle)}>
             <span className="w-6 h-1 bg-gray-800 dark:bg-white mb-1"></span>

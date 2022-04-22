@@ -17,7 +17,6 @@ export function ScrollMotion({ children, ...props }) {
       controls.start("hidden");
     }
   }, [controls, inView]);
-  console.log(props.duration);
   const variants = {
     hidden: { y: 30, opacity: 0 },
     visible: {
