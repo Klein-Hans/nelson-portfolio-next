@@ -13,6 +13,7 @@
     "@strapi/provider-email-amazon-ses": "^4.1.8",
     "axios": "^0.24.0",
     "cross-env": "^7.0.3",
+    "eslint-plugin-react": "^7.29.4",
     "framer-motion": "^5.3.2",
     "graphql": "^16.3.0",
     "next": "latest",
